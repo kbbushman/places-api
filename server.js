@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-const placesRoutes = require('./routes/places-routes');
+const placesRoutes = require('./routes/placesRoutes');
 
 app.use('/api/v1/places', placesRoutes);
 
