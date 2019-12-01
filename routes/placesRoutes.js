@@ -1,5 +1,5 @@
 const express = require('express');
-const HttpError = require('../models/httpError');
+const HttpError = require('../models/HttpError');
 const router = express.Router();
 
 const TEMP_PLACES = [
