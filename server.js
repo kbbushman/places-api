@@ -1,11 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const HttpError = require('./models/HttpError');
 
 const app = express();
+
+app.use(bodyParser.json());
 
 const placesRoutes = require('./routes/placesRoutes');
 
 app.use('/api/v1/places', placesRoutes);
+
+app.use((req, res, next) => {
+  const error = new HttpError('Could not find this route', 404);
+  throw error;
+});
 
 // Optional Fourth Argument In Callback Makes This An Error Handler Middleware
 app.use((error, req, res, next) => {
