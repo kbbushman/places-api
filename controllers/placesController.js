@@ -1,3 +1,4 @@
+const uuid = require('uuid/v4');
 const HttpError = require('../models/HttpError');
 
 const TEMP_PLACES = [
@@ -33,10 +34,27 @@ const getPlaceByUserId = (req, res, next) => {
     return next(new HttpError('Could not find a place by the provided user id.', 404));
   }
 
-  res.json({status:200, data: selectedPlace})
+  res.json({status:200, data: selectedPlace});
+};
+
+const createPlace = (req, res, next) => {
+  const { title, description, coordinates, address, creator } = req.body;
+  const newPlace = {
+    title,
+    description,
+    address,
+    creator,
+    location: coordinates,
+    id: uuid(),
+  };
+
+  TEMP_PLACES.push(newPlace);
+
+  res.status(201).json({place: newPlace});
 };
 
 module.exports = {
   getPlaceById,
   getPlaceByUserId,
+  createPlace,
 };
