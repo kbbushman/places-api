@@ -7,8 +7,10 @@ const app = express();
 app.use(bodyParser.json());
 
 const placesRoutes = require('./routes/placesRoutes');
+const usersRoutes = require('./routes/usersRoutes');
 
 app.use('/api/v1/places', placesRoutes);
+app.use('/api/v1/users', usersRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError('Could not find this route', 404);
