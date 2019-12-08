@@ -1,6 +1,7 @@
 const uuid = require('uuid/v4');
 const { validationResult } = require('express-validator');
 const HttpError = require('../models/HttpError');
+const getCoordsFromAddress = require('../utils/location');
 
 let TEMP_PLACES = [
   {
@@ -38,15 +39,24 @@ const getPlacesByUserId = (req, res, next) => {
   res.json({status:200, data: selectedPlaces});
 };
 
-const createPlace = (req, res, next) => {
+const createPlace = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
     // console.log(errors);
-    throw new HttpError('Invalid inputs passed, please check your data', 422);
+    return next(new HttpError('Invalid inputs passed, please check your data', 422));
   }
 
-  const { title, description, coordinates, address, creator } = req.body;
+  const { title, description, address, creator } = req.body;
+
+  let coordinates;
+
+  try {
+    coordinates = await getCoordsFromAddress(address);
+  } catch (err) {
+    return next(err);
+  }
+
   const newPlace = {
     title,
     description,
@@ -83,7 +93,7 @@ const updatePlace = (req, res, next) => {
 
 const deletePlace = (req, res, next) => {
   const placeId = req.params.pid;
-  
+
   if (!TEMP_PLACES.find(place => place.id === placeId)) {
     throw new HttpError('Could not find a place with provided ID', 404);
   }
