@@ -26,15 +26,15 @@ const getPlaceById = (req, res, next) => {
   res.json({status: 200, data: selectedPlace});
 };
 
-const getPlaceByUserId = (req, res, next) => {
+const getPlacesByUserId = (req, res, next) => {
   const userId = req.params.uid;
-  const selectedPlace = TEMP_PLACES.find(place => place.creator === userId);
+  const selectedPlaces = TEMP_PLACES.filter(place => place.creator === userId);
 
-  if (!selectedPlace) {
-    return next(new HttpError('Could not find a place by the provided user id.', 404));
+  if (!selectedPlaces || selectedPlaces.length === 0) {
+    return next(new HttpError('Could not find a places by the provided user id.', 404));
   }
 
-  res.json({status:200, data: selectedPlace});
+  res.json({status:200, data: selectedPlaces});
 };
 
 const createPlace = (req, res, next) => {
@@ -75,7 +75,7 @@ const deletePlace = (req, res, next) => {
 
 module.exports = {
   getPlaceById,
-  getPlaceByUserId,
+  getPlacesByUserId,
   createPlace,
   updatePlace,
   deletePlace,
