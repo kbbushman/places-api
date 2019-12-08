@@ -83,6 +83,11 @@ const updatePlace = (req, res, next) => {
 
 const deletePlace = (req, res, next) => {
   const placeId = req.params.pid;
+  
+  if (!TEMP_PLACES.find(place => place.id === placeId)) {
+    throw new HttpError('Could not find a place with provided ID', 404);
+  }
+
   TEMP_PLACES = TEMP_PLACES.filter(place => place.id !== placeId);
 
   res.status(200).json({message: 'Place Deleted'});
