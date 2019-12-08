@@ -1,7 +1,7 @@
 const uuid = require('uuid/v4');
 const HttpError = require('../models/HttpError');
 
-const TEMP_PLACES = [
+let TEMP_PLACES = [
   {
     id: 'p1',
     title: 'Empire State Building',
@@ -53,8 +53,30 @@ const createPlace = (req, res, next) => {
   res.status(201).json({place: newPlace});
 };
 
+const updatePlace = (req, res, next) => {
+  const { title, description } = req.body;
+  const placeId = req.params.pid;
+
+  const updatedPlace = {...TEMP_PLACES.find(place => place.id === placeId)};
+  const placeIndex = TEMP_PLACES.findIndex(place => place.id === placeId);
+  updatedPlace.title = title;
+  updatedPlace.description = description;
+  TEMP_PLACES[placeIndex] = updatedPlace;
+
+  res.status(200).json({place: updatedPlace});
+};
+
+const deletePlace = (req, res, next) => {
+  const placeId = req.params.pid;
+  TEMP_PLACES = TEMP_PLACES.filter(place => place.id !== placeId);
+
+  res.status(200).json({message: 'Place Deleted'});
+};
+
 module.exports = {
   getPlaceById,
   getPlaceByUserId,
   createPlace,
+  updatePlace,
+  deletePlace,
 };
