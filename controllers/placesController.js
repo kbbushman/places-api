@@ -127,14 +127,23 @@ const updatePlace = async (req, res, next) => {
   res.status(200).json({place: place.toObject({getters: true})});
 };
 
-const deletePlace = (req, res, next) => {
+const deletePlace = async (req, res, next) => {
   const placeId = req.params.pid;
-
-  if (!TEMP_PLACES.find(place => place.id === placeId)) {
-    throw new HttpError('Could not find a place with provided ID', 404);
+  let place;
+  
+  try {
+    place = await Place.findById(placeId);
+  } catch (err) {
+    const error = new HttpError('Delete place failed. Please try again', 500);
+    return next(error);
   }
 
-  TEMP_PLACES = TEMP_PLACES.filter(place => place.id !== placeId);
+  try {
+    await place.remove();
+  } catch (err) {
+    const error = new HttpError('Delete place failed. Please try again', 500);
+    return next(error);
+  }
 
   res.status(200).json({message: 'Place Deleted'});
 };
