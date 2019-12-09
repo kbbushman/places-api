@@ -39,15 +39,22 @@ const getPlaceById = async (req, res, next) => {
   res.json({status: 200, place: place.toObject({getters: true})});
 };
 
-const getPlacesByUserId = (req, res, next) => {
+const getPlacesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
-  const selectedPlaces = TEMP_PLACES.filter(place => place.creator === userId);
+  let places;
 
-  if (!selectedPlaces || selectedPlaces.length === 0) {
+  try {
+    places = await Place.find({creator: userId});
+  } catch (err) {
+    const error = new HttpError('Could not find places. Please try again', 500);
+    return next(error);
+  }
+
+  if (!places || places.length === 0) {
     return next(new HttpError('Could not find a places by the provided user id.', 404));
   }
 
-  res.json({status:200, data: selectedPlaces});
+  res.json({status:200, places: places.map(place => place.toObject({getters: true}))});
 };
 
 const createPlace = async (req, res, next) => {
