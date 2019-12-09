@@ -32,6 +32,7 @@ app.use((error, req, res, next) => {
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 })
   .then(() => {
     app.listen(process.env.PORT, () => console.log(`Server running at http://localhost:${process.env.PORT}`));
