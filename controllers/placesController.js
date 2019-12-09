@@ -2,6 +2,7 @@ const uuid = require('uuid/v4');
 const { validationResult } = require('express-validator');
 const HttpError = require('../models/HttpError');
 const getCoordsFromAddress = require('../utils/location');
+const Place = require('../models/Place');
 
 let TEMP_PLACES = [
   {
@@ -57,16 +58,21 @@ const createPlace = async (req, res, next) => {
     return next(err);
   }
 
-  const newPlace = {
+  const newPlace = new Place({
     title,
     description,
     address,
     creator,
     location: coordinates,
-    id: uuid(),
-  };
+    image: 'https://www.ggcatering.com/system/uploads/fae/image/asset/2969/City_View_at_Metreon_HERO.jpg',
+  });
 
-  TEMP_PLACES.push(newPlace);
+  try {
+    await newPlace.save();
+  } catch (err) {
+    const error = new HttpError('Create new place failed. Please try again', 500);
+    return next(error);
+  }
 
   res.status(201).json({place: newPlace});
 };
