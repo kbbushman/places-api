@@ -18,15 +18,25 @@ let TEMP_PLACES = [
   },
 ];
 
-const getPlaceById = (req, res, next) => {
+const getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
-  const selectedPlace = TEMP_PLACES.find(place => place.id === placeId);
+  let place;
 
-  if (!selectedPlace) {
-    throw new HttpError('Could not find a place by the provided id.', 404);
+  try {
+    place = await Place.findById(placeId);
+  } catch (err) {
+    const error = new HttpError('Something went wrong while trying to find place', 500);
+    return next(error);
   }
 
-  res.json({status: 200, data: selectedPlace});
+
+  if (!place) {
+    const error = new HttpError('Could not find a place by the provided id.', 404);
+    return next(error);
+  }
+
+  // {getters: true} adds an "id" prop with string value to the object
+  res.json({status: 200, place: place.toObject({getters: true})});
 };
 
 const getPlacesByUserId = (req, res, next) => {
