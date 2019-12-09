@@ -12,8 +12,17 @@ const TEMP_USERS = [
   },
 ];
 
-const getUsers = (req, res, next) => {
-  res.status(200).json({users: TEMP_USERS});
+const getUsers = async (req, res, next) => {
+  let users;
+
+  try {
+    users = await User.find({}, '-password');
+  } catch (err) {
+    const error = new HttpError('Could not find users. Please try again', 500);
+    return next(error);
+  }
+
+  res.status(200).json({users: users.map(user => user.toObject({getters: true}))});
 };
 
 const signup = async (req, res, next) => {
