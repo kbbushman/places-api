@@ -20,10 +20,11 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  places: {
-    type: String,
+  places: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'Place',
     required: true,
-  },
+  }],
 });
 
 // Unique Email Validation
