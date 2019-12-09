@@ -35,7 +35,7 @@ const signup = async (req, res, next) => {
     return next(error);
   }
 
-  const { name, email, password, places } = req.body;
+  const { name, email, password } = req.body;
 
   try {
     existingUser = await User.findOne({email});
@@ -53,7 +53,7 @@ const signup = async (req, res, next) => {
     name,
     email,
     password,
-    places,
+    places: [],
     image: 'https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwjih7-O-qfmAhWTGjQIHUlhDecQjRx6BAgBEAQ&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FFile%3APlaceholder_no_text.svg&psig=AOvVaw10W2erY6loxiwZOm8ta6OP&ust=1575959769720182',
   });
 
