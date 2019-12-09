@@ -1,8 +1,10 @@
 const uuid = require('uuid/v4');
+const mongoose = require('mongoose');
 const { validationResult } = require('express-validator');
 const HttpError = require('../models/HttpError');
 const getCoordsFromAddress = require('../utils/location');
 const Place = require('../models/Place');
+const User = require('../models/User');
 
 let TEMP_PLACES = [
   {
@@ -84,8 +86,28 @@ const createPlace = async (req, res, next) => {
     image: 'https://www.ggcatering.com/system/uploads/fae/image/asset/2969/City_View_at_Metreon_HERO.jpg',
   });
 
+  let user;
+
   try {
-    await newPlace.save();
+    user = await User.findById(creator);
+  } catch (err) {
+    const error = new HttpError('Create new place failed. Please try again', 500);
+    return next(error);
+  }
+
+  if (!user) {
+    const error = new HttpError('Could not find user with provided id. Please try again', 404);
+    return next(error);
+  }
+
+  try {
+    // Session will prevent all transactions from succeeding if one fails
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await newPlace.save({session: sess});
+    user.places.push(newPlace);
+    await user.save({session: sess});
+    await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError('Create new place failed. Please try again', 500);
     return next(error);
