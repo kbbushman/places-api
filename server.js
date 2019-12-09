@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const HttpError = require('./models/HttpError');
 
+require('dotenv').config();
 const app = express();
 
 app.use(bodyParser.json());
@@ -27,4 +29,11 @@ app.use((error, req, res, next) => {
   res.json({message: error.message || 'An unknown error occurred!'});
 });
 
-app.listen(5000);
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => {
+    app.listen(process.env.PORT, () => console.log(`Server running at http://localhost:${process.env.PORT}`));
+  })
+  .catch((err) => console.log(err));
