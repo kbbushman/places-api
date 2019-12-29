@@ -35,7 +35,7 @@ const signup = async (req, res, next) => {
   }
 
   if (existingUser) {
-    const error = new HttpError('User already registerd. Please login', 422);
+    const error = new HttpError('User already registered. Please login', 422);
     return next(error);
   }
 
