@@ -70,7 +70,8 @@ const createPlace = async (req, res, next) => {
     address,
     creator,
     location: coordinates,
-    image: 'https://www.ggcatering.com/system/uploads/fae/image/asset/2969/City_View_at_Metreon_HERO.jpg',
+    image: req.file.path,
+    // image: 'https://www.ggcatering.com/system/uploads/fae/image/asset/2969/City_View_at_Metreon_HERO.jpg',
   });
 
   let user;
