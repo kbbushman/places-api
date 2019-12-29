@@ -44,7 +44,8 @@ const signup = async (req, res, next) => {
     email,
     password,
     places: [],
-    image: 'https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg',
+    image: req.file.path,
+    // image: 'https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg',
   });
 
   try {
