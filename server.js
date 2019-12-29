@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -28,6 +29,13 @@ app.use((req, res, next) => {
 
 // Optional Fourth Argument In Callback Makes This An Error Handler Middleware
 app.use((error, req, res, next) => {
+  // If file was sent on request error, remove the file from disk storage
+  if (req.file) {
+    fs.unlink(req.file.path, (err) => {
+      console.log(err);
+    });
+  }
+
   if (res.headerSent) {
     return next(error);
   }
