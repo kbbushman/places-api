@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -8,6 +9,8 @@ require('dotenv').config();
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 const placesRoutes = require('./routes/placesRoutes');
 const usersRoutes = require('./routes/usersRoutes');
