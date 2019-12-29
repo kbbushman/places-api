@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
 const HttpError = require('../models/HttpError');
 const User = require('../models/User');
 
@@ -39,10 +40,18 @@ const signup = async (req, res, next) => {
     return next(error);
   }
 
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hash(password, 12);
+  } catch (err) {
+    const error = new HttpError('Could not create account, please try again.', 500);
+    return next(error);
+  }
+
   const newUser = new User({
     name,
     email,
-    password,
+    password: hashedPassword,
     places: [],
     image: req.file.path,
     // image: 'https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg',
@@ -69,7 +78,20 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
-  if (!existingUser || existingUser.password !== password) {
+  if (!existingUser) {
+    const error = new HttpError('Invalid email and/or password. Please try again', 401);
+    return next(error);
+  }
+
+  let isValidPassword = false;
+  try {
+    isValidPassword = await bcrypt.compare(password, existingUser.password);
+  } catch (err) {
+    const error = new HttpError('Login failed. Please check your credentials and try again.', 500);
+    return next(error);
+  }
+
+  if (!isValidPassword) {
     const error = new HttpError('Invalid email and/or password. Please try again', 401);
     return next(error);
   }
