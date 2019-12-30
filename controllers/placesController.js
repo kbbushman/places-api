@@ -55,7 +55,7 @@ const createPlace = async (req, res, next) => {
     return next(new HttpError('Invalid inputs passed, please check your data', 422));
   }
 
-  const { title, description, address, creator } = req.body;
+  const { title, description, address } = req.body;
 
   let coordinates;
 
@@ -69,7 +69,7 @@ const createPlace = async (req, res, next) => {
     title,
     description,
     address,
-    creator,
+    creator: req.userData.userId,
     location: coordinates,
     image: req.file.path,
     // image: 'https://www.ggcatering.com/system/uploads/fae/image/asset/2969/City_View_at_Metreon_HERO.jpg',
