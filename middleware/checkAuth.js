@@ -6,6 +6,10 @@ require('dotenv').config();
 module.exports = (req, res, next) => {
   let token;
 
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+
   try {
     token = req.headers.authorization.split(' ')[1];
 
