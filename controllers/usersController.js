@@ -70,16 +70,16 @@ const signup = async (req, res, next) => {
   let token;
   try {
     token = jwt.sign(
-      {userId: createdUser.id, email: createdUser.email},
+      {userId: newUser.id, email: newUser.email},
       process.env.JWT_SECRET,
-      {expiresIn: '1hr'}
+      {expiresIn: '1h'}
     );
   } catch (err) {
     const error = new HttpError('Registration failed. Please try again', 500);
     return next(error);
   }
 
-  res.status(201).json({userId: createdUser.id, email: createdUser.email, token: token});
+  res.status(201).json({userId: newUser.id, email: newUser.email, token: token});
 };
 
 const login = async (req, res, next) => {
