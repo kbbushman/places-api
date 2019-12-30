@@ -21,7 +21,7 @@ module.exports = (req, res, next) => {
     req.userData = {userId: decodedToken.userId};
     next();
   } catch (err) {
-    const error = new HttpError('Authentication is required. Please login and try again', 401);
+    const error = new HttpError('Authentication is required. Please login and try again', 403);
     return next(error);
   }
 
