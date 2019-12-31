@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const HttpError = require('./models/HttpError.js');
-console.log('CHECK ONE... ----------------------->');
+
 require('dotenv').config();
 const app = express();
 
@@ -15,8 +15,6 @@ app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 const placesRoutes = require('./routes/placesRoutes');
 const usersRoutes = require('./routes/usersRoutes');
 
-console.log('CHECK TWO... ----------------------->')
-
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
@@ -24,15 +22,8 @@ app.use((req, res, next) => {
   next();
 });
 
-console.log('CHECK THREE... ----------------------->')
-
 app.use('/api/v1/places', placesRoutes);
 app.use('/api/v1/users', usersRoutes);
-
-app.use((req, res, next) => {
-  console.log('REQ RECEIEVED ------------------------->')
-  next();
-})
 
 app.use((req, res, next) => {
   const error = new HttpError('Could not find this route', 404);
