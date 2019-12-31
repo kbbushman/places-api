@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const HttpError = require('./models/HttpError.js');
+// const HttpError = require('./models/HttpError.js');
 
 require('dotenv').config();
 const app = express();
@@ -26,7 +26,8 @@ app.use('/api/v1/places', placesRoutes);
 app.use('/api/v1/users', usersRoutes);
 
 app.use((req, res, next) => {
-  const error = new HttpError('Could not find this route', 404);
+  // const error = new HttpError('Could not find this route', 404);
+  const error = new Error('Could not find this route.')
   throw error;
 });
 
