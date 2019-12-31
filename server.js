@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const HttpError = require('./models/HttpError.js');
 
@@ -15,12 +16,14 @@ app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 const placesRoutes = require('./routes/placesRoutes');
 const usersRoutes = require('./routes/usersRoutes');
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-  next();
-});
+app.use(cors());
+
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+//   next();
+// });
 
 app.use('/api/v1/places', placesRoutes);
 app.use('/api/v1/users', usersRoutes);
