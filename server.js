@@ -19,6 +19,7 @@ console.log('CHECK TWO... ----------------------->')
 
 app.use((req, res, next) => {
   console.log('REQ RECEIEVED ------------------------->')
+  next();
 })
 
 app.use((req, res, next) => {
