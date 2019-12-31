@@ -13,8 +13,8 @@ app.use(bodyParser.json());
 
 // app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
-const placesRoutes = require('./routes/placesRoutes');
-const usersRoutes = require('./routes/usersRoutes');
+// const placesRoutes = require('./routes/placesRoutes');
+// const usersRoutes = require('./routes/usersRoutes');
 
 app.use(cors());
 
@@ -27,7 +27,7 @@ app.use(cors());
 
 app.post('/api/v1/signup', (req, res) => res.sendStatus(201));
 
-app.use('/api/v1/places', placesRoutes);
+// app.use('/api/v1/places', placesRoutes);
 // app.use('/api/v1/users', usersRoutes);
 
 app.use((req, res, next) => {
