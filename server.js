@@ -26,6 +26,8 @@ app.use(cors());
 // });
 
 app.post('/api/v1/users/signup', (req, res) => res.json({status: 201}));
+app.post('/api/v1/test', (req, res) => res.json({status: 201}));
+app.get('/api/v1/users/signup', (req, res) => res.json({status: 201}));
 
 // app.use('/api/v1/places', placesRoutes);
 // app.use('/api/v1/users', usersRoutes);
