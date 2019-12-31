@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const HttpError = require('./models/HttpError.js');
+// const HttpError = require('./models/HttpError.js');
 
 require('dotenv').config();
 const app = express();
@@ -30,27 +30,27 @@ app.post('/api/v1/signup', (req, res) => res.sendStatus(201));
 // app.use('/api/v1/places', placesRoutes);
 // app.use('/api/v1/users', usersRoutes);
 
-app.use((req, res, next) => {
-  const error = new HttpError('Could not find this route', 404);
-  throw error;
-});
+// app.use((req, res, next) => {
+//   const error = new HttpError('Could not find this route', 404);
+//   throw error;
+// });
 
 // Optional Fourth Argument In Callback Makes This An Error Handler Middleware
-app.use((error, req, res, next) => {
-  // If file was sent on request error, remove the file from disk storage
-  if (req.file) {
-    fs.unlink(req.file.path, (err) => {
-      console.log(err);
-    });
-  }
+// app.use((error, req, res, next) => {
+//   // If file was sent on request error, remove the file from disk storage
+//   if (req.file) {
+//     fs.unlink(req.file.path, (err) => {
+//       console.log(err);
+//     });
+//   }
 
-  if (res.headerSent) {
-    return next(error);
-  }
+//   if (res.headerSent) {
+//     return next(error);
+//   }
 
-  res.status(error.code || 500);
-  res.json({message: error.message || 'An unknown error occurred!'});
-});
+//   res.status(error.code || 500);
+//   res.json({message: error.message || 'An unknown error occurred!'});
+// });
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
