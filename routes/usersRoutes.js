@@ -19,8 +19,6 @@ router.post(
   usersController.signup
 );
 
-// router.post('/signup', (req, res) => res.sendStatus(201));
-
 router.post('/login', usersController.login);
 
 module.exports = router;
