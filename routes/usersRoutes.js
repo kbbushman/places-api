@@ -19,7 +19,7 @@ router.get('/', usersController.getUsers);
 //   usersController.signup
 // );
 
-router.post('/signup', () => res.sendStatus(201));
+router.post('/signup', (req, res) => res.sendStatus(201));
 
 router.post('/login', usersController.login);
 
