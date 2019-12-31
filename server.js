@@ -27,13 +27,12 @@ app.use((req, res, next) => {
 console.log('CHECK THREE... ----------------------->')
 
 app.use('/api/v1/places', placesRoutes);
-// app.use('/api/v1/users', usersRoutes);
-app.use('/api/v1/users/signup', (req, res) => res.sendStatus(201));
+app.use('/api/v1/users', usersRoutes);
 
-// app.use((req, res, next) => {
-//   console.log('REQ RECEIEVED ------------------------->')
-//   next();
-// })
+app.use((req, res, next) => {
+  console.log('REQ RECEIEVED ------------------------->')
+  next();
+})
 
 app.use((req, res, next) => {
   const error = new HttpError('Could not find this route', 404);
