@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const HttpError = require('./models/HttpError');
+const HttpError = require('./models/HttpError.js');
 
 require('dotenv').config();
 const app = express();
